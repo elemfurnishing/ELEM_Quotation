@@ -280,6 +280,9 @@ const QuotationDocument = ({ quotation, imageCache }) => {
                                                         {item.modelNo && (
                                                             <div><span style={{ color: '#888' }}>Model No:</span> {item.modelNo}</div>
                                                         )}
+                                                        {item.make && (
+                                                            <div><span style={{ color: '#888' }}>Make:</span> {item.make}</div>
+                                                        )}
                                                         {item.size && (
                                                             <div><span style={{ color: '#888' }}>Size:</span> {item.size}</div>
                                                         )}

@@ -491,7 +491,10 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                             item.size || '',                                // U: Size
                             item.color || '',                               // V: Color
                             item.specification || '',                       // W: Specification
+                            item.color || '',                               // V: Color
+                            item.specification || '',                       // W: Specification
                             item.remarks || '',                             // X: Remarks
+                            item.make || '',                                // AA: Make (Brand)
                             formData.address || '',                         // Y: Client Address
                             formData.expectedDeliveryDate || ''             // Z: Expected Delivery Date
                         ];
@@ -552,7 +555,10 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                         item.size || '',                                // U: Size
                         item.color || '',                               // V: Color
                         item.specification || '',                       // W: Specification
+                        item.color || '',                               // V: Color
+                        item.specification || '',                       // W: Specification
                         item.remarks || '',                             // X: Remarks
+                        item.make || '',                                // AA: Make (Brand)
                         formData.address || '',                         // Y: Client Address
                         formData.expectedDeliveryDate || ''             // Z: Expected Delivery Date
                     ];
@@ -714,6 +720,7 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                 // Extract data from the row
                 const rawImageUrl = foundRow[2] || ''; // Column C - Product Image
                 const productName = foundRow[3] || ''; // Column D - Product Name
+                const make = foundRow[5] || '';        // Column F - Make (Brand)
                 const modelNo = foundRow[6] || '';     // Column G - Model No
                 const size = foundRow[7] || '';        // Column H - Size
                 const color = foundRow[8] || '';       // Column I - Color
@@ -733,6 +740,7 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                     image: null, // No file, using URL
                     imagePreview: displayableImageUrl, // Converted image URL for display
                     modelNo: modelNo,
+                    make: make,
                     size: size,
                     color: color,
                     specification: specification,
@@ -1202,6 +1210,17 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                                 {/* New Fields: Model, Size, Color, Specification, Remarks */}
                                 <div className="grid grid-cols-2 gap-3">
                                     <div>
+                                        <label className="block text-[10px] uppercase font-bold text-gray-500 mb-0.5 ml-1">Make</label>
+                                        <input
+                                            type="text"
+                                            name="make"
+                                            value={currentItem.make || ''}
+                                            onChange={handleItemChange}
+                                            placeholder="Brand Name"
+                                            className="w-full px-2 py-1.5 text-xs border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white"
+                                        />
+                                    </div>
+                                    <div>
                                         <label className="block text-[10px] uppercase font-bold text-gray-500 mb-0.5 ml-1">Model No</label>
                                         <input
                                             type="text"
@@ -1370,6 +1389,17 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
 
                                                         {/* New Fields Grid */}
                                                         <div className="grid grid-cols-2 gap-3">
+                                                            <div>
+                                                                <label className="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Make</label>
+                                                                <input
+                                                                    type="text"
+                                                                    name="make"
+                                                                    value={tempRowData.make || ''}
+                                                                    onChange={handleInlineChange}
+                                                                    placeholder="Brand"
+                                                                    className="w-full px-2 py-2 text-sm border-2 border-amber-300 rounded-lg bg-white focus:ring-2 focus:ring-amber-200 outline-none"
+                                                                />
+                                                            </div>
                                                             <div>
                                                                 <label className="text-[10px] font-bold text-gray-500 uppercase mb-1 block">Model No</label>
                                                                 <input

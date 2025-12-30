@@ -120,7 +120,8 @@ const Quotations = () => {
                 size: row[20] || '',            // U: Size
                 color: row[21] || '',           // V: Color
                 specification: row[22] || '',   // W: Specification
-                remarks: row[23] || ''          // X: Remarks
+                remarks: row[23] || '',         // X: Remarks
+                make: row[26] || ''             // AA: Make (Brand)
             });
 
             // Capture Client Address from Column Y (Index 24) if available

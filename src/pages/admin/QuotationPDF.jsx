@@ -349,12 +349,11 @@ const QuotationPDF = ({ isOpen, onClose, quotation }) => {
                                     <p style={{ fontWeight: 'bold', color: '#5a5a5a', marginBottom: '6px', fontSize: '12px' }}>BILL TO:</p>
                                     <p style={{ margin: '3px 0', color: '#444', fontSize: '11px' }}><strong>Name :-</strong> {customer?.name || 'N/A'}</p>
                                     <p style={{ margin: '3px 0', color: '#444', fontSize: '11px' }}><strong>Phone No.:-</strong> {customer?.phone || 'N/A'}</p>
-                                    <p style={{ margin: '3px 0', color: '#444', fontSize: '11px' }}><strong>Email :-</strong> {customer?.email || 'N/A'}</p>
+                                    <p style={{ margin: '3px 0', color: '#444', fontSize: '11px' }}><strong>Address:-</strong> {customer?.address || 'N/A'}</p>
                                 </div>
                                 <div style={{ textAlign: 'right', color: '#666', fontSize: '11px', maxWidth: '50%' }}>
                                     <p style={{ margin: '3px 0' }}>Date: {formatDate(date)}</p>
                                     <p style={{ margin: '3px 0' }}>Invoice NO. {serialNo || 'N/A'}</p>
-                                    <p style={{ margin: '3px 0', color: '#444' }}><strong>Address:-</strong> {customer?.address || 'N/A'}</p>
                                 </div>
                             </div>
 
@@ -391,6 +390,7 @@ const QuotationPDF = ({ isOpen, onClose, quotation }) => {
                                             <th style={{ padding: '8px 6px', textAlign: 'left', fontWeight: 'bold', color: '#555', fontSize: '9px' }}>DESCRIPTION</th>
                                             <th style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 'bold', color: '#555', fontSize: '9px', width: '50px' }}>QTY</th>
                                             <th style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 'bold', color: '#555', fontSize: '9px', width: '80px' }}>PRICE</th>
+                                            <th style={{ padding: '8px 6px', textAlign: 'center', fontWeight: 'bold', color: '#555', fontSize: '9px', width: '60px' }}>DISC(%)</th>
                                             <th style={{ padding: '8px 6px', textAlign: 'right', fontWeight: 'bold', color: '#555', fontSize: '9px', width: '80px' }}>TOTAL</th>
                                         </tr>
                                     </thead>
@@ -445,8 +445,8 @@ const QuotationPDF = ({ isOpen, onClose, quotation }) => {
                                                                     {item.serialNumber && (
                                                                         <div><span style={{ color: '#888' }}>Item Code:</span> {item.serialNumber}</div>
                                                                     )}
-                                                                    {item.modelNo && (
-                                                                        <div><span style={{ color: '#888' }}>Model No:</span> {item.modelNo}</div>
+                                                                    {item.make && (
+                                                                        <div><span style={{ color: '#888' }}>Make:</span> {item.make}</div>
                                                                     )}
                                                                     {item.size && (
                                                                         <div><span style={{ color: '#888' }}>Size:</span> {item.size}</div>
@@ -470,6 +470,7 @@ const QuotationPDF = ({ isOpen, onClose, quotation }) => {
                                                     </td>
                                                     <td style={{ padding: '10px 6px', borderBottom: '1px solid #eee', textAlign: 'center', fontSize: '10px', verticalAlign: 'top' }}>{qty}</td>
                                                     <td style={{ padding: '10px 6px', borderBottom: '1px solid #eee', textAlign: 'right', fontSize: '10px', verticalAlign: 'top' }}>{formatCurrency(price)}</td>
+                                                    <td style={{ padding: '10px 6px', borderBottom: '1px solid #eee', textAlign: 'center', fontSize: '10px', verticalAlign: 'top', color: discount > 0 ? '#e53935' : '#555' }}>{discount > 0 ? `${discount}%` : '-'}</td>
                                                     <td style={{ padding: '10px 6px', borderBottom: '1px solid #eee', textAlign: 'right', fontSize: '10px', verticalAlign: 'top' }}>{formatCurrency(subtotal)}</td>
                                                 </tr>
                                             );
