@@ -491,12 +491,10 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                             item.size || '',                                // U: Size
                             item.color || '',                               // V: Color
                             item.specification || '',                       // W: Specification
-                            item.color || '',                               // V: Color
-                            item.specification || '',                       // W: Specification
                             item.remarks || '',                             // X: Remarks
-                            item.make || '',                                // AA: Make (Brand)
                             formData.address || '',                         // Y: Client Address
-                            formData.expectedDeliveryDate || ''             // Z: Expected Delivery Date
+                            formData.expectedDeliveryDate || '',            // Z: Expected Delivery Date
+                            item.make || ''                                 // AA: Make (Brand)
                         ];
 
                         // Update by matching NEW Item No
@@ -555,12 +553,10 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                         item.size || '',                                // U: Size
                         item.color || '',                               // V: Color
                         item.specification || '',                       // W: Specification
-                        item.color || '',                               // V: Color
-                        item.specification || '',                       // W: Specification
                         item.remarks || '',                             // X: Remarks
-                        item.make || '',                                // AA: Make (Brand)
                         formData.address || '',                         // Y: Client Address
-                        formData.expectedDeliveryDate || ''             // Z: Expected Delivery Date
+                        formData.expectedDeliveryDate || '',            // Z: Expected Delivery Date
+                        item.make || ''                                 // AA: Make (Brand)
                     ];
                 });
 
@@ -622,7 +618,8 @@ const EditQuotation = ({ isOpen, onClose, initialData, onSuccess }) => {
                                     finalPdfLink, // Q: The ACTUAL PDF Link
                                     lastItemNo, lastItem.serialNumber || '', lastItem.modelNo || '',
                                     lastItem.size || '', lastItem.color || '', lastItem.specification || '',
-                                    lastItem.remarks || '', formData.address || '', formData.expectedDeliveryDate || ''
+                                    lastItem.remarks || '', formData.address || '', formData.expectedDeliveryDate || '',
+                                    lastItem.make || ''  // AA: Make (Brand)
                                 ];
 
                                 await fetch(API_URL, {
