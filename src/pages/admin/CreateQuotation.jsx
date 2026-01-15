@@ -117,6 +117,8 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
     const [inventoryData, setInventoryData] = useState([]); // Cached inventory data for fast search
     const [loadingInventory, setLoadingInventory] = useState(false);
     const [inventoryReady, setInventoryReady] = useState(false);
+    const [isFieldsLocked, setIsFieldsLocked] = useState(false); // Lock qty, price, discount after auto-fill
+    const [isManuallyUnlocked, setIsManuallyUnlocked] = useState(false); // Track if user clicked Edit button
 
     // Global cache reference to avoid refetching
     const inventoryCacheRef = useRef(null);
@@ -187,6 +189,18 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
     const clearSearch = () => {
         setSearchTerm('');
         setAvailableQty(null);
+    };
+
+    // Enable editing of locked fields
+    const handleEnableEdit = () => {
+        setIsFieldsLocked(false);
+        setIsManuallyUnlocked(true);
+    };
+
+    // Cancel editing and re-lock fields
+    const handleCancelEdit = () => {
+        setIsFieldsLocked(true);
+        setIsManuallyUnlocked(false);
     };
 
     const removeItem = (index) => {
@@ -514,6 +528,9 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
 
                 // Show available quantity (not prefilled, just display)
                 setAvailableQty(quantity);
+                
+                // Lock qty, price, and discount fields
+                setIsFieldsLocked(true);
 
                 showToast(`Product found: ${productName}`, 'success');
                 setSearchTerm(''); // Clear search field
@@ -631,6 +648,8 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
             remarks: ''
         });
         setAvailableQty(null); // Clear available qty display
+        setIsFieldsLocked(false); // Unlock fields for next item
+        setIsManuallyUnlocked(false); // Reset manual unlock state
     };
 
     // INLINE EDITING HANDLERS
@@ -1051,7 +1070,7 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
                                     </div>
                                 </div>
 
-                                {/* Qty, Price, Discount + Add Button */}
+                                {/* Qty, Price, Discount + Edit + Add Button */}
                                 <div className="grid grid-cols-12 gap-2.5">
                                     <div className="col-span-2">
                                         <label className="block font-medium text-gray-700 text-[10px] mb-1">Qty</label>
@@ -1061,7 +1080,8 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
                                             value={currentItem.qty}
                                             onChange={handleItemChange}
                                             min="1"
-                                            className="w-full px-2.5 py-1.5 text-sm border-2 border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white font-medium"
+                                            disabled={isFieldsLocked}
+                                            className={`w-full px-2.5 py-1.5 text-sm border-2 rounded-lg text-center focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none font-medium ${isFieldsLocked ? 'bg-gray-100 border-gray-200 cursor-not-allowed' : 'bg-white border-gray-300'}`}
                                         />
                                     </div>
                                     <div className="col-span-4">
@@ -1073,7 +1093,8 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
                                             onChange={handleItemChange}
                                             placeholder="0"
                                             min="0"
-                                            className="w-full px-2.5 py-1.5 text-sm border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white font-medium"
+                                            disabled={isFieldsLocked}
+                                            className={`w-full px-2.5 py-1.5 text-sm border-2 rounded-lg focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none font-medium ${isFieldsLocked ? 'bg-gray-100 border-gray-200 cursor-not-allowed' : 'bg-white border-gray-300'}`}
                                         />
                                         {currentItem.price && currentItem.discount > 0 && (
                                             <p className="text-[10px] text-green-600 font-bold mt-1 text-right">
@@ -1091,20 +1112,74 @@ const CreateQuotation = ({ isOpen, onClose, customer = null, onSuccess }) => {
                                             placeholder="0"
                                             min="0"
                                             max="100"
-                                            className="w-full px-2.5 py-1.5 text-sm border-2 border-gray-300 rounded-lg text-center focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none bg-white font-semibold"
+                                            disabled={isFieldsLocked}
+                                            className={`w-full px-2.5 py-1.5 text-sm border-2 rounded-lg text-center focus:ring-2 focus:ring-orange-400 focus:border-orange-400 outline-none font-semibold ${isFieldsLocked ? 'bg-gray-100 border-gray-200 cursor-not-allowed' : 'bg-white border-gray-300'}`}
                                         />
                                     </div>
-                                    <div className="col-span-3">
-                                        <label className="block font-bold text-gray-700 text-[10px] mb-1">&nbsp;</label>
-                                        <button
-                                            onClick={addItem}
-                                            disabled={items.length >= 100}
-                                            className={`w-full font-semibold text-white rounded-lg hover:opacity-90 active:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-2 shadow-md py-2 text-xs bg-orange-600 hover:bg-orange-700`}
-                                        >
-                                            <Plus size={16} />
-                                            Add
-                                        </button>
-                                    </div>
+                                    {isFieldsLocked ? (
+                                        // Locked state: Show Edit + Add buttons
+                                        <>
+                                            <div className="col-span-1">
+                                                <label className="block font-bold text-gray-700 text-[10px] mb-1">&nbsp;</label>
+                                                <button
+                                                    onClick={handleEnableEdit}
+                                                    className="w-full font-semibold text-white rounded-lg hover:opacity-90 active:scale-95 transition flex items-center justify-center gap-1.5 shadow-md py-2.5 text-xs bg-blue-600 hover:bg-blue-700"
+                                                >
+                                                    <Edit size={15} />
+                                                    <span>Edit</span>
+                                                </button>
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="block font-bold text-gray-700 text-[10px] mb-1">&nbsp;</label>
+                                                <button
+                                                    onClick={addItem}
+                                                    disabled={items.length >= 100}
+                                                    className="w-full font-semibold text-white rounded-lg hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-1.5 shadow-md py-2.5 text-xs bg-orange-600 hover:bg-orange-700"
+                                                >
+                                                    <Plus size={15} />
+                                                    <span>Add</span>
+                                                </button>
+                                            </div>
+                                        </>
+                                    ) : isManuallyUnlocked ? (
+                                        // Manually unlocked state: Show Cancel + Add buttons
+                                        <>
+                                            <div className="col-span-1">
+                                                <label className="block font-bold text-gray-700 text-[10px] mb-1">&nbsp;</label>
+                                                <button
+                                                    onClick={handleCancelEdit}
+                                                    className="w-full font-semibold text-gray-700 bg-gray-200 rounded-lg hover:bg-gray-300 active:scale-95 transition flex items-center justify-center gap-1.5 shadow-md py-2.5 text-xs border-2 border-gray-300"
+                                                >
+                                                    <X size={15} />
+                                                    <span>Cancel</span>
+                                                </button>
+                                            </div>
+                                            <div className="col-span-2">
+                                                <label className="block font-bold text-gray-700 text-[10px] mb-1">&nbsp;</label>
+                                                <button
+                                                    onClick={addItem}
+                                                    disabled={items.length >= 100}
+                                                    className="w-full font-semibold text-white rounded-lg hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-1.5 shadow-md py-2.5 text-xs bg-orange-600 hover:bg-orange-700"
+                                                >
+                                                    <Plus size={15} />
+                                                    <span>Add</span>
+                                                </button>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        // Default unlocked state: Show only Add button
+                                        <div className="col-span-3">
+                                            <label className="block font-bold text-gray-700 text-[10px] mb-1">&nbsp;</label>
+                                            <button
+                                                onClick={addItem}
+                                                disabled={items.length >= 100}
+                                                className="w-full font-semibold text-white rounded-lg hover:opacity-90 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center justify-center gap-1.5 shadow-md py-2.5 text-sm bg-orange-600 hover:bg-orange-700"
+                                            >
+                                                <Plus size={15} />
+                                                <span>Add</span>
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>      {/* Items List */}
