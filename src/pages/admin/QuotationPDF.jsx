@@ -2,7 +2,7 @@
  * QuotationPDF Component
  * 
  * Generates a professional PDF quotation matching the exact ELEM brand design.
- * Footer "Thank You!" and "Powered By Botovate" always appears at the bottom of each page.
+ * Footer "Thank You!" and "Powered By Botivate" always appears at the bottom of each page.
  */
 
 import React, { useRef, useState, useEffect } from 'react';
