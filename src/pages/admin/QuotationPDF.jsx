@@ -679,7 +679,7 @@ const QuotationPDF = ({ isOpen, onClose, quotation }) => {
                             fontFamily: 'Georgia, serif',
                             letterSpacing: '2px'
                         }}>Thank you!</h2>
-                        <p style={{ color: '#5a5a5a', fontSize: '9px', margin: 0, letterSpacing: '1px' }}>Powered By Botovate</p>
+                        <p style={{ color: '#5a5a5a', fontSize: '9px', margin: 0, letterSpacing: '1px' }}>Powered By Botivate</p>
                     </div>
                 </div>
             </div>
