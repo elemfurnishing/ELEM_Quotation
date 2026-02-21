@@ -247,9 +247,9 @@ const QuotationPDF = ({ isOpen, onClose, quotation }) => {
                 pdf.setTextColor(90, 90, 90); // #5a5a5a
                 pdf.text('Thank you!', pageWidth / 2, pageHeight - 13, { align: 'center' });
 
-                // Powered By Botovate text
+                // Powered By Botivate text
                 pdf.setFontSize(8);
-                pdf.text('Powered By Botovate', pageWidth / 2, pageHeight - 5, { align: 'center' });
+                pdf.text('Powered By Botivate', pageWidth / 2, pageHeight - 5, { align: 'center' });
             }).save();
 
         } catch (error) {
